@@ -1,0 +1,50 @@
+[project]
+name = "aml-monitoring-backend"
+version = "0.1.0"
+description = "AML Transaction Monitoring Platform Backend"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn>=0.34.0",
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.14.0",
+    "pydantic>=2.10.0",
+    "pydantic-settings>=2.7.0",
+    "python-dotenv>=1.0.1",
+    "bcrypt>=4.2.0",
+    "PyJWT>=2.9.0",
+    "python-multipart>=0.0.9",
+    "email-validator>=2.2.0",
+]
+
+[project.optional-dependencies]
+postgres = [
+    "psycopg[binary]>=3.2.0",
+]
+dev = [
+    "pytest>=8.0.0",
+    "httpx>=0.28.0",
+    "mypy>=1.13.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+exclude = ["tests*", "alembic*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true

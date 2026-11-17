@@ -1,0 +1,18 @@
+/* Import Carbon styles */
+@use '@carbon/react/scss/themes';
+@use '@carbon/react/scss/theme' with ($theme: themes.$white);
+@use '@carbon/react';
+
+/* Global styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+}

@@ -1,0 +1,4 @@
+# Line ending configuration
+*.sh text eol=lf
+*.bat text eol=crlf
+docker-entrypoint.sh text eol=lf
