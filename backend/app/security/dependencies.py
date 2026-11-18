@@ -48,7 +48,7 @@ async def get_current_user(
     
     # Load user from payload
     user_id = int(payload.get('sub'))
-    user = db.query(User).filter(User.id == user_id, User.is_active == True).first()
+    user = db.query(User).filter(User.id == user_id, User.is_active.is_(True)).first()
     
     if not user:
         raise HTTPException(
