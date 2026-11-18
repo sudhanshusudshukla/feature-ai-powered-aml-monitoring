@@ -1,0 +1,196 @@
+{
+  "status": "issues_found",
+  "target_path": "/repos/feature-ai-powered-aml-monitoring/backend",
+  "requested_linters": [
+    "ruff"
+  ],
+  "applicable_linters": [
+    "ruff",
+    "shellcheck",
+    "shfmt"
+  ],
+  "selected_linters": [
+    "ruff"
+  ],
+  "message": "All findings, including any findings omitted from the inline response, are available in the report files listed under `report_paths`.",
+  "summary": {
+    "errors": 422,
+    "warnings": 0,
+    "total_findings": 422,
+    "inline_findings": 20,
+    "remaining_findings": 402,
+    "linters_run": 1,
+    "linters_with_issues": 1,
+    "linters_unavailable": 0
+  },
+  "by_tool": {
+    "ruff": {
+      "status": "issues_found",
+      "errors": 422,
+      "warnings": 0,
+      "total_findings": 422,
+      "inline_findings": 20,
+      "remaining_findings": 402,
+      "files": [
+        {
+          "path": "/repos/feature-ai-powered-aml-monitoring/backend/alembic/env.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "Unused `noqa` directive (unused: `F401`)",
+              "line": 12,
+              "column": 29,
+              "code": "RUF100"
+            },
+            {
+              "msg": "Unused `noqa` directive (unused: `F401`)",
+              "line": 13,
+              "column": 29,
+              "code": "RUF100"
+            },
+            {
+              "msg": "Unused `noqa` directive (unused: `F401`)",
+              "line": 14,
+              "column": 25,
+              "code": "RUF100"
+            },
+            {
+              "msg": "Unused `noqa` directive (unused: `F401`)",
+              "line": 15,
+              "column": 32,
+              "code": "RUF100"
+            },
+            {
+              "msg": "Unused `noqa` directive (unused: `F401`)",
+              "line": 16,
+              "column": 26,
+              "code": "RUF100"
+            },
+            {
+              "msg": "Unused `noqa` directive (unused: `F401`)",
+              "line": 17,
+              "column": 26,
+              "code": "RUF100"
+            },
+            {
+              "msg": "Unused `noqa` directive (unused: `F401`)",
+              "line": 18,
+              "column": 36,
+              "code": "RUF100"
+            },
+            {
+              "msg": "Unused `noqa` directive (unused: `F401`)",
+              "line": 19,
+              "column": 34,
+              "code": "RUF100"
+            }
+          ]
+        },
+        {
+          "path": "/repos/feature-ai-powered-aml-monitoring/backend/alembic/versions/20261117_fix_reviewed_by_type.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 8,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/feature-ai-powered-aml-monitoring/backend/alembic/versions/20261117_initial_schema.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 8,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/feature-ai-powered-aml-monitoring/backend/app/alert/router.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "`app.rules.models.RuleEvaluationResult` imported but unused",
+              "line": 11,
+              "column": 30,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.customer.models.CustomerRiskProfile` imported but unused",
+              "line": 12,
+              "column": 52,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.common.errors.NotFoundError` imported but unused",
+              "line": 13,
+              "column": 31,
+              "code": "F401"
+            },
+            {
+              "msg": "Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable",
+              "line": 21,
+              "column": 19,
+              "code": "B008"
+            },
+            {
+              "msg": "Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable",
+              "line": 22,
+              "column": 26,
+              "code": "B008"
+            }
+          ]
+        },
+        {
+          "path": "/repos/feature-ai-powered-aml-monitoring/backend/app/alert/schemas.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/feature-ai-powered-aml-monitoring/backend/app/alert/service.py",
+          "findings": [
+            {
+              "msg": "`datetime.datetime.utcnow()` used",
+              "line": 54,
+              "column": 24,
+              "code": "DTZ003"
+            },
+            {
+              "msg": "`datetime.datetime.utcnow()` used",
+              "line": 55,
+              "column": 24,
+              "code": "DTZ003"
+            }
+          ]
+        }
+      ],
+      "report_path": "/repos/feature-ai-powered-aml-monitoring/backend/.quality/lint/ruff-result.json",
+      "truncated": true
+    }
+  },
+  "report_dir": "/repos/feature-ai-powered-aml-monitoring/backend/.quality/lint",
+  "report_paths": {
+    "summary": "/repos/feature-ai-powered-aml-monitoring/backend/.quality/lint/summary.json",
+    "ruff": "/repos/feature-ai-powered-aml-monitoring/backend/.quality/lint/ruff-result.json"
+  },
+  "truncated": true
+}
