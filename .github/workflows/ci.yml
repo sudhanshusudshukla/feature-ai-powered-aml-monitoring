@@ -11,6 +11,14 @@ jobs:
     name: Backend Tests
     runs-on: ubuntu-latest
 
+    # app/config.py requires SECRET_KEY at import time, and alembic/env.py
+    # imports it, so every step (not just pytest) needs these.
+    env:
+      SECRET_KEY: test-secret-key-min-32-characters-long
+      JWT_ALGORITHM: HS256
+      JWT_EXPIRY_MINUTES: 60
+      CORS_ORIGINS: http://localhost:5173
+
     services:
       postgres:
         image: postgres:15
@@ -63,10 +71,6 @@ jobs:
         working-directory: backend
         env:
           DATABASE_URL: sqlite:///./test.db
-          SECRET_KEY: test-secret-key-min-32-characters-long
-          JWT_ALGORITHM: HS256
-          JWT_EXPIRY_MINUTES: 60
-          CORS_ORIGINS: http://localhost:5173
         run: |
           python -m pytest tests/ -v --tb=short
 
