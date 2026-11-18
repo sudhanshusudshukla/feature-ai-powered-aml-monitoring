@@ -204,7 +204,7 @@ class AccountRepository:
                 Transaction.account_id == account_id,
                 Transaction.transaction_timestamp >= window_90d,
                 Transaction.transaction_timestamp < as_of,
-                CountryRisk.is_high_risk == True
+                CountryRisk.is_high_risk.is_(True)
             )
             .first() is not None
         )

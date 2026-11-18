@@ -15,6 +15,7 @@ from app.rules.models import RuleEvaluationResult
 from app.customer.models import Account, Customer, CustomerRiskProfile
 from app.common.errors import NotFoundError
 from app.common.pagination import PaginatedResponse
+from app.customer.models import Account, Customer
 
 router = APIRouter()
 

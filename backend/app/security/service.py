@@ -22,7 +22,7 @@ class SecurityService:
         Raises AuthenticationError if credentials are invalid.
         """
         # Find user by email (using username field)
-        user = self.db.query(User).filter(User.username == email, User.is_active == True).first()
+        user = self.db.query(User).filter(User.username == email, User.is_active.is_(True)).first()
         
         if not user:
             raise AuthenticationError("Invalid credentials")

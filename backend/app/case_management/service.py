@@ -374,13 +374,7 @@ class CaseManagementService:
         
         action = action_map[decision]
         
-        # Check for open information requests that may block decision
-        open_requests = self.repository.get_information_requests(case_id)
-        has_open_info_requests = any(
-            req.status == "OPEN" for req in open_requests
-        )
-        
-        # Validate state transition (some transitions may be blocked by open requests)
+        # Validate state transition
         # The state machine validates the transition is legal for the current state
         next_state = self.state_machine.validate_transition(case.state, action)
         
