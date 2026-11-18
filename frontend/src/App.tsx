@@ -6,6 +6,8 @@ import { AuthProvider } from './lib/auth-context';
 import { LoginPage } from './components/auth/LoginPage';
 import { RequireAuth } from './components/auth/RequireAuth';
 import { Layout } from './components/layout/Layout';
+import { DashboardPage } from './features/dashboard/DashboardPage';
+import { TransactionListPage } from './features/transactions/TransactionListPage';
 import { TransactionSubmitPage } from './features/transactions/TransactionSubmitPage';
 import { TransactionDetailPage } from './features/transactions/TransactionDetailPage';
 import AlertDetailPage from './features/alerts/AlertDetailPage';
@@ -14,16 +16,6 @@ import { CaseWorkspacePage } from './features/cases/CaseWorkspacePage';
 import { CaseListPage } from './features/cases/CaseListPage';
 import RulesPage from './features/rules/RulesPage';
 import AdminPage from './features/admin/AdminPage';
-
-// Placeholder dashboard page
-function DashboardPage() {
-  return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>Welcome to the AML Transaction Monitoring Platform</p>
-    </div>
-  );
-}
 
 export function App() {
   return (
@@ -45,6 +37,17 @@ export function App() {
 
           <Route
             path="/transactions"
+            element={
+              <RequireAuth>
+                <Layout>
+                  <TransactionListPage />
+                </Layout>
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/transactions/new"
             element={
               <RequireAuth>
                 <Layout>
