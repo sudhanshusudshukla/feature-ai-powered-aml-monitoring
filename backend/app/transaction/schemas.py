@@ -1,6 +1,7 @@
 """Transaction request and response schemas."""
 from datetime import datetime
 from decimal import Decimal
+from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -17,6 +18,25 @@ class TransactionIngestRequest(BaseModel):
     counterparty_name: str | None = Field(None, max_length=255, description="Optional counterparty name")
     counterparty_account: str | None = Field(None, max_length=100, description="Optional counterparty account")
     timestamp: datetime = Field(..., description="Transaction occurrence time")
+
+
+class TransactionListItem(BaseModel):
+    """Transaction list item for paginated list endpoint."""
+    model_config = ConfigDict(from_attributes=True)
+    
+    id: int
+    transaction_reference: str
+    account_id: int
+    customer_name: str
+    amount: str
+    currency: str
+    transaction_type: str
+    origin_country: str
+    destination_country: str
+    timestamp: datetime
+    matched_rules_count: int
+    alert_raised: bool
+    alert_id: Optional[int] = None
 
 
 class RuleEvaluationItem(BaseModel):

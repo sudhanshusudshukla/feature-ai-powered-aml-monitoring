@@ -1,5 +1,6 @@
 """Case management schemas for request/response validation."""
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -10,6 +11,24 @@ class CaseCreateRequest(BaseModel):
     
     title: str = Field(..., max_length=255, description="Case title")
     alert_ids: list[int] = Field(..., min_length=1, description="Alert IDs to link to case")
+
+
+class CaseListItem(BaseModel):
+    """Case list item for paginated list endpoint."""
+    model_config = ConfigDict(from_attributes=True)
+    
+    id: int
+    case_number: str
+    title: str
+    customer_id: int
+    customer_name: str
+    state: str
+    priority: str
+    created_by_user_id: int
+    assigned_to_user_id: Optional[int] = None
+    created_at: datetime
+    updated_at: datetime
+    alert_count: int
 
 
 class AlertSummary(BaseModel):
