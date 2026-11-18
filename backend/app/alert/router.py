@@ -8,9 +8,7 @@ from app.security.models import User
 from app.alert.models import Alert
 from app.alert.schemas import AlertDetailResponse, TransactionSummary, RuleEvaluationSummary, CustomerSnapshotData
 from app.transaction.models import Transaction
-from app.rules.models import RuleEvaluationResult
-from app.customer.models import Account, Customer, CustomerRiskProfile
-from app.common.errors import NotFoundError
+from app.customer.models import Account, Customer
 
 router = APIRouter()
 

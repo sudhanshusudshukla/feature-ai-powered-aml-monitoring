@@ -40,8 +40,7 @@ jobs:
         working-directory: backend
         run: |
           python -m pip install --upgrade pip
-          pip install .
-          pip install pytest ruff mypy
+          pip install ".[postgres,dev]"
 
       - name: Run database migrations
         working-directory: backend

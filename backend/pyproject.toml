@@ -24,7 +24,10 @@ postgres = [
 dev = [
     "pytest>=8.0.0",
     "httpx>=0.28.0",
+    # starlette>=1.x TestClient requires httpx2
+    "httpx2>=2.0.0",
     "mypy>=1.13.0",
+    "ruff>=0.8.0",
 ]
 
 [build-system]
@@ -42,6 +45,10 @@ python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = "-v --tb=short"
+
+[tool.ruff.lint]
+# Pin the rule set so new ruff releases don't change what CI enforces.
+select = ["E4", "E7", "E9", "F"]
 
 [tool.mypy]
 python_version = "3.11"

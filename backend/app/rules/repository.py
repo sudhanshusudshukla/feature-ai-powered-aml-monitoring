@@ -13,7 +13,7 @@ class RulesRepository:
     def get_active_rules(self) -> list[DetectionRule]:
         """Retrieve all active detection rules."""
         return self.db.query(DetectionRule).filter(
-            DetectionRule.is_active == True
+            DetectionRule.is_active.is_(True)
         ).all()
     
     def get_rule_by_code(self, rule_code: str) -> DetectionRule | None:
