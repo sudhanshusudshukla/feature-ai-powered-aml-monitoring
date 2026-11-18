@@ -18,7 +18,6 @@ from app.common.enums import (
     CountryRiskRating,
     RiskLevel,
     RuleSeverity,
-    TransactionType,
     UserRole,
 )
 from app.customer.models import Account, Customer, CustomerRiskProfile
@@ -700,7 +699,7 @@ def seed_cases(db: Session):
         print(f"Created responded information request for case {case2.case_number}")
     
     db.commit()
-    print(f"Sample cases seeding completed")
+    print("Sample cases seeding completed")
 
 
 def seed_audit_events(db: Session):
