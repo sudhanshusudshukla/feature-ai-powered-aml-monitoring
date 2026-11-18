@@ -79,7 +79,7 @@ export function TransactionSubmitPage() {
             Transactions
           </Link>
         </BreadcrumbItem>
-        <BreadcrumbItem isCurrentPage>New</BreadcrumbItem>
+        <BreadcrumbItem isCurrentPage>New transaction</BreadcrumbItem>
       </Breadcrumb>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>

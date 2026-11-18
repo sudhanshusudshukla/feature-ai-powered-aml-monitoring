@@ -1,9 +1,10 @@
 """Security dependencies for route protection."""
-from typing import Annotated
+from typing import Annotated, Callable
 
 from fastapi import Depends, Header, HTTPException, status
 from sqlalchemy.orm import Session
 
+from app.common.enums import UserRole
 from app.common.errors import AuthenticationError
 from app.database import get_db
 from app.security.models import User
@@ -56,3 +57,21 @@ async def get_current_user(
         )
     
     return user
+
+
+def require_role(*allowed_roles: UserRole) -> Callable:
+    """
+    Dependency factory that checks if user has one of the allowed roles.
+    
+    Usage:
+        @router.get("/admin-endpoint", dependencies=[Depends(require_role(UserRole.ADMINISTRATOR))])
+    """
+    def role_checker(current_user: User = Depends(get_current_user)) -> User:
+        if current_user.role not in allowed_roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Access denied. Required roles: {[role.value for role in allowed_roles]}"
+            )
+        return current_user
+    
+    return role_checker
