@@ -1,5 +1,6 @@
 """Alert domain schemas for alert creation and risk scoring."""
 from datetime import datetime
+from typing import Optional
 from pydantic import BaseModel, Field, ConfigDict
 
 
@@ -52,6 +53,24 @@ class CustomerSnapshotData(BaseModel):
     risk_level: str
     account_number: str
     account_status: str
+
+
+class AlertListItem(BaseModel):
+    """Alert list item for paginated list endpoint."""
+    model_config = ConfigDict(from_attributes=True)
+    
+    id: int
+    alert_number: str
+    transaction_id: int
+    risk_score: int
+    priority: str
+    status: str
+    created_at: datetime
+    assigned_to_user_id: Optional[int] = None
+    customer_name: str
+    transaction_reference: str
+    transaction_amount: str
+    transaction_currency: str
 
 
 class AlertDetailResponse(BaseModel):

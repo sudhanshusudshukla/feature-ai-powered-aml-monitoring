@@ -11,6 +11,9 @@ from app.audit.router import router as audit_router
 from app.case_management.router import router as case_router
 from app.investigation.router import router as investigation_router
 from app.alert.router import router as alert_router
+from app.rules.router import router as rules_router
+from app.dashboard.router import router as dashboard_router
+from app.admin.router import router as admin_router
 
 
 @asynccontextmanager
@@ -57,3 +60,6 @@ app.include_router(audit_router, prefix="/api/v1", tags=["audit"])
 app.include_router(case_router, prefix="/api/v1/cases", tags=["cases"])
 app.include_router(investigation_router, prefix="/api/v1/cases", tags=["investigation"])
 app.include_router(alert_router, prefix="/api/v1/alerts", tags=["alerts"])
+app.include_router(rules_router, prefix="/api/v1/rules", tags=["rules"])
+app.include_router(dashboard_router, prefix="/api/v1/dashboard", tags=["dashboard"])
+app.include_router(admin_router, prefix="/api/v1/admin", tags=["admin"])

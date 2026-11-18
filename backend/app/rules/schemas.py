@@ -1,5 +1,6 @@
 """Rules domain schemas for evaluation and versioning."""
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -39,3 +40,34 @@ class EvaluationBatchResult(BaseModel):
     max_rule_score: int
     any_match: bool
     failed_rules: list[str] = Field(default_factory=list)
+
+
+class RuleListItem(BaseModel):
+    """Rule list item for paginated list endpoint."""
+    model_config = ConfigDict(from_attributes=True)
+    
+    id: int
+    rule_code: str
+    name: str
+    severity: str
+    description: str
+    is_active: bool
+    version: int
+    created_at: datetime
+    updated_at: datetime
+
+
+class RuleDetailResponse(BaseModel):
+    """Complete rule detail response."""
+    model_config = ConfigDict(from_attributes=True)
+    
+    id: int
+    rule_code: str
+    name: str
+    severity: str
+    description: str
+    is_active: bool
+    version: int
+    created_at: datetime
+    updated_at: datetime
+    versions: list[RuleVersionResponse]

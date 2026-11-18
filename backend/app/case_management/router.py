@@ -1,14 +1,18 @@
 """Case management API endpoints."""
-from typing import Annotated
+from datetime import datetime
+from typing import Annotated, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy import desc, func
 from sqlalchemy.orm import Session
 
+from app.case_management.models import AMLCase, CaseAlertLink
 from app.case_management.schemas import (
     CaseAssignRequest,
     CaseCreateRequest,
     CaseDecisionRequest,
     CaseDetailResponse,
+    CaseListItem,
 )
 from app.case_management.service import CaseManagementService
 from app.common.errors import (
@@ -18,11 +22,116 @@ from app.common.errors import (
     NotFoundError,
     OptimisticLockConflictError,
 )
+from app.common.pagination import PaginatedResponse
+from app.customer.models import Customer
 from app.database import get_db
 from app.security.dependencies import get_current_user
 from app.security.models import User
 
 router = APIRouter()
+
+
+@router.get(
+    "",
+    response_model=PaginatedResponse[CaseListItem],
+    summary="List cases"
+)
+def list_cases(
+    page: int = Query(1, ge=1, description="Page number"),
+    page_size: int = Query(20, ge=1, le=100, description="Items per page"),
+    state: Optional[str] = Query(None, description="Filter by state"),
+    priority: Optional[str] = Query(None, description="Filter by priority"),
+    assignee: Optional[int] = Query(None, description="Filter by assignee user ID"),
+    sort_by: str = Query("created_at", description="Sort field"),
+    sort_order: str = Query("desc", description="Sort order: asc or desc"),
+    db: Annotated[Session, Depends(get_db)] = None,
+    current_user: Annotated[User, Depends(get_current_user)] = None
+) -> PaginatedResponse[CaseListItem]:
+    """
+    List cases with pagination, filtering, and sorting.
+    
+    Requires authentication.
+    """
+    # Build base query with alert count
+    query = (
+        db.query(
+            AMLCase.id,
+            AMLCase.case_number,
+            AMLCase.title,
+            AMLCase.customer_id,
+            Customer.full_name.label("customer_name"),
+            AMLCase.state,
+            AMLCase.priority,
+            AMLCase.created_by_user_id,
+            AMLCase.assigned_to_user_id,
+            AMLCase.created_at,
+            AMLCase.updated_at,
+            func.count(CaseAlertLink.alert_id).label("alert_count")
+        )
+        .join(Customer, AMLCase.customer_id == Customer.id)
+        .outerjoin(CaseAlertLink, AMLCase.id == CaseAlertLink.case_id)
+        .group_by(
+            AMLCase.id,
+            AMLCase.case_number,
+            AMLCase.title,
+            AMLCase.customer_id,
+            Customer.full_name,
+            AMLCase.state,
+            AMLCase.priority,
+            AMLCase.created_by_user_id,
+            AMLCase.assigned_to_user_id,
+            AMLCase.created_at,
+            AMLCase.updated_at
+        )
+    )
+    
+    # Apply filters
+    if state:
+        query = query.filter(AMLCase.state == state)
+    if priority:
+        query = query.filter(AMLCase.priority == priority)
+    if assignee:
+        query = query.filter(AMLCase.assigned_to_user_id == assignee)
+    
+    # Get total count
+    total = query.count()
+    
+    # Apply sorting
+    sort_column = getattr(AMLCase, sort_by, AMLCase.created_at)
+    if sort_order.lower() == "desc":
+        query = query.order_by(desc(sort_column))
+    else:
+        query = query.order_by(sort_column)
+    
+    # Apply pagination
+    offset = (page - 1) * page_size
+    results = query.offset(offset).limit(page_size).all()
+    
+    # Convert to response models
+    items = [
+        CaseListItem(
+            id=row.id,
+            case_number=row.case_number,
+            title=row.title,
+            customer_id=row.customer_id,
+            customer_name=row.customer_name,
+            state=row.state,
+            priority=row.priority,
+            created_by_user_id=row.created_by_user_id,
+            assigned_to_user_id=row.assigned_to_user_id,
+            created_at=row.created_at,
+            updated_at=row.updated_at,
+            alert_count=row.alert_count
+        )
+        for row in results
+    ]
+    
+    return PaginatedResponse(
+        items=items,
+        page=page,
+        page_size=page_size,
+        total=total
+    )
 
 
 @router.post(
