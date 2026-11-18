@@ -88,7 +88,7 @@ export function TransactionListPage() {
         </Button>
       </div>
 
-      <DataTable rows={transactions} headers={headers}>
+      <DataTable rows={transactions.map(t => ({ ...t, id: String(t.id) }))} headers={headers}>
         {({ rows, headers, getHeaderProps, getTableProps }) => (
           <>
             <Table {...getTableProps()}>

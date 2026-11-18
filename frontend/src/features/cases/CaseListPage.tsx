@@ -94,7 +94,7 @@ export function CaseListPage() {
         Cases
       </h1>
 
-      <DataTable rows={cases} headers={headers}>
+      <DataTable rows={cases.map(c => ({ ...c, id: String(c.id) }))} headers={headers}>
         {({ rows, headers, getHeaderProps, getTableProps }) => (
           <>
             <Table {...getTableProps()}>

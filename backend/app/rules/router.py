@@ -101,6 +101,11 @@ def get_rule_detail(
             detail=f"Rule {rule_code} not found"
         )
     
+    import json
+    
+    # Sort versions by version_number descending (newest first)
+    sorted_versions = sorted(rule.versions, key=lambda v: v.version_number, reverse=True)
+    
     return RuleDetailResponse(
         id=rule.id,
         rule_code=rule.rule_code,
@@ -116,9 +121,9 @@ def get_rule_detail(
                 "id": v.id,
                 "rule_id": v.rule_id,
                 "version_number": v.version_number,
-                "parameters_json": v.parameters_json,
+                "parameters_json": json.loads(v.parameters_json) if isinstance(v.parameters_json, str) else v.parameters_json,
                 "effective_from": v.effective_from
             }
-            for v in rule.versions
+            for v in sorted_versions
         ]
     )

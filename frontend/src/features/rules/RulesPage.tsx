@@ -90,7 +90,7 @@ export default function RulesPage() {
         Detection Rules
       </h1>
 
-      <DataTable rows={rules} headers={headers}>
+      <DataTable rows={rules.map(r => ({ ...r, id: String(r.id) }))} headers={headers}>
         {({ rows, headers, getHeaderProps, getTableProps }) => (
           <>
             <Table {...getTableProps()}>

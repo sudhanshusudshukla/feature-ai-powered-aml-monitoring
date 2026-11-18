@@ -135,7 +135,7 @@ def list_cases(
 
 
 @router.post(
-    "/",
+    "",
     response_model=CaseDetailResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Create case from alerts"

@@ -45,7 +45,10 @@ def list_transactions(
     
     Requires authentication.
     """
-    # Build base query
+    # Build base query - left join with Alert to get alert_raised status
+    from app.alert.models import Alert
+    from app.rules.models import RuleEvaluationResult
+    
     query = (
         db.query(
             Transaction.id,
@@ -58,14 +61,13 @@ def list_transactions(
             Transaction.origin_country,
             Transaction.destination_country,
             Transaction.transaction_timestamp.label("timestamp"),
-            func.count(func.distinct(func.case(
-                [(Transaction.alert_id.isnot(None), 1)],
-                else_=None
-            ))).label("matched_rules_count"),
-            func.max(Transaction.alert_id).label("alert_id")
+            func.count(func.distinct(RuleEvaluationResult.id)).label("matched_rules_count"),
+            Alert.id.label("alert_id")
         )
         .join(Account, Transaction.account_id == Account.id)
         .join(Customer, Account.customer_id == Customer.id)
+        .outerjoin(Alert, Alert.transaction_id == Transaction.id)
+        .outerjoin(RuleEvaluationResult, RuleEvaluationResult.transaction_id == Transaction.id)
         .group_by(
             Transaction.id,
             Transaction.transaction_reference,
@@ -76,7 +78,8 @@ def list_transactions(
             Transaction.transaction_type,
             Transaction.origin_country,
             Transaction.destination_country,
-            Transaction.transaction_timestamp
+            Transaction.transaction_timestamp,
+            Alert.id
         )
     )
     
@@ -85,9 +88,9 @@ def list_transactions(
         query = query.filter(Transaction.transaction_type == transaction_type)
     if outcome:
         if outcome == "alert_raised":
-            query = query.filter(Transaction.alert_id.isnot(None))
+            query = query.filter(Alert.id.isnot(None))
         elif outcome == "no_alert":
-            query = query.filter(Transaction.alert_id.is_(None))
+            query = query.filter(Alert.id.is_(None))
     if amount_min is not None:
         query = query.filter(Transaction.amount >= amount_min)
     if amount_max is not None:
@@ -139,7 +142,7 @@ def list_transactions(
     )
 
 
-@router.post("/", response_model=TransactionIngestResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=TransactionIngestResponse, status_code=status.HTTP_201_CREATED)
 def create_transaction(
     request: TransactionIngestRequest,
     db: Session = Depends(get_db),

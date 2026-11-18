@@ -92,7 +92,7 @@ export function AlertListPage() {
         Alerts
       </h1>
 
-      <DataTable rows={alerts} headers={headers}>
+      <DataTable rows={alerts.map(a => ({ ...a, id: String(a.id) }))} headers={headers}>
         {({ rows, headers, getHeaderProps, getTableProps }) => (
           <>
             <Table {...getTableProps()}>

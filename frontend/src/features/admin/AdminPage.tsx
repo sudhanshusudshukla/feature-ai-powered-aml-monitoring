@@ -78,7 +78,7 @@ export default function AdminPage() {
         User Management
       </h2>
 
-      <DataTable rows={users} headers={headers}>
+      <DataTable rows={users.map(u => ({ ...u, id: String(u.id) }))} headers={headers}>
         {({ rows, headers, getHeaderProps, getTableProps }) => (
           <>
             <Table {...getTableProps()}>
